@@ -23,25 +23,31 @@ A Swift-based REST API server for habit tracking, built with the Vapor web frame
 
 ## API Endpoints
 
-### Authentication
-- `POST /api/auth/register` - User registration
-- `POST /api/auth/login` - User login
-- `POST /api/auth/refresh` - Refresh JWT token
-- `POST /api/auth/logout` - User logout
+### Implemented Endpoints
 
-### Categories
+#### Authentication
+- `POST /api/register` - User registration ✅
+
+### Planned Endpoints
+
+#### Authentication
+- `POST /api/login` - User login
+- `POST /api/refresh` - Refresh JWT token
+- `POST /api/logout` - User logout
+
+#### Categories
 - `GET /api/categories` - Get all categories
 - `POST /api/categories` - Create new category
 - `PUT /api/categories/:id` - Update category
 - `DELETE /api/categories/:id` - Delete category
 
-### Habits
+#### Habits
 - `GET /api/habits` - Get all habits
 - `POST /api/habits` - Create new habit
 - `PUT /api/habits/:id` - Update habit
 - `DELETE /api/habits/:id` - Delete habit
 
-### Habit Entries
+#### Habit Entries
 - `POST /api/entries` - Mark habit completion
 - `DELETE /api/entries/:id` - Remove habit completion
 - `GET /api/entries/calendar/:month` - Get monthly calendar data
@@ -109,7 +115,13 @@ HabitTracker-API-Server/
 │       ├── entrypoint.swift      # Application entry point
 │       ├── configure.swift       # Application configuration
 │       ├── routes.swift          # Route definitions
-│       └── Controllers/          # API controllers (to be implemented)
+│       ├── Controllers/          # API controllers
+│       │   └── UserController.swift # User registration/auth controller
+│       ├── Models/               # Data models
+│       │   ├── User.swift        # User model with validation
+│       │   └── RegisterResponseDTO.swift # Registration response
+│       └── Migrations/           # Database migrations
+│           └── CreateUsersTableMigration.swift
 ├── Tests/
 │   └── HabitTrackerAppServerTests/
 │       └── HabitTrackerAppServerTests.swift
@@ -156,7 +168,24 @@ docker run -p 8080:8080 habit-tracker-api
 
 ## Development Status
 
-This project serves as a learning experience for backend development with Vapor. The current implementation includes basic server setup and routing infrastructure.
+This project serves as a learning experience for backend development with Vapor.
+
+### Current Implementation
+- ✅ Basic Vapor server setup with routing infrastructure
+- ✅ User model with Fluent ORM integration
+- ✅ User registration endpoint with validation
+- ✅ Password hashing with Vapor's built-in hasher
+- ✅ Database migration for users table
+- ✅ Swift 6.0 concurrency support (@Sendable)
+
+### In Progress
+- 🔄 JWT authentication system
+- 🔄 User login/logout endpoints
+
+### Planned Features
+- 📋 Categories and Habits CRUD operations
+- 📋 Habit entries and calendar functionality
+- 📋 Protected routes with JWT middleware
 
 ## Contributing
 

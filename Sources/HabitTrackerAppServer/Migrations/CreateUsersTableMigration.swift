@@ -17,13 +17,9 @@ struct CreateUsersTableMigration: AsyncMigration {
             .field("password", .string, .required)
             .create()
     }
-    
-    
-    
+
     func revert(on database: any Database) async throws {
         try await database.schema("users")
             .delete()
     }
 }
-
-
