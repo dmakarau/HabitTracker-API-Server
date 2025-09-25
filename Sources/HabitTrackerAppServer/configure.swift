@@ -22,7 +22,7 @@ public func configure(_ app: Application) async throws {
                     username: "postgres",
                     password: "",
                     database: "habitstrackerdb",
-                    tls: .disable,
+                    tls: .disable
                 )
             ),
             as: .psql
