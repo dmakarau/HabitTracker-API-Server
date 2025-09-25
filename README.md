@@ -27,11 +27,11 @@ A Swift-based REST API server for habit tracking, built with the Vapor web frame
 
 #### Authentication
 - `POST /api/register` - User registration ✅
+- `POST /api/login` - User login ✅
 
 ### Planned Endpoints
 
 #### Authentication
-- `POST /api/login` - User login
 - `POST /api/refresh` - Refresh JWT token
 - `POST /api/logout` - User logout
 
@@ -79,6 +79,11 @@ DATABASE_URL=your_database_url_here
 JWT_SECRET=your_jwt_secret_here
 ```
 
+**Important**: Generate a secure JWT secret using:
+```bash
+openssl rand -base64 32
+```
+
 ### Running the Server
 
 #### Development Mode
@@ -119,7 +124,9 @@ HabitTracker-API-Server/
 │       │   └── UserController.swift # User registration/auth controller
 │       ├── Models/               # Data models
 │       │   ├── User.swift        # User model with validation
-│       │   └── RegisterResponseDTO.swift # Registration response
+│       │   ├── RegisterResponseDTO.swift # Registration response
+│       │   ├── AuthPayload.swift # JWT payload structure
+│       │   └── LoginResponseDTO.swift # Login response
 │       └── Migrations/           # Database migrations
 │           └── CreateUsersTableMigration.swift
 ├── Tests/
@@ -177,10 +184,10 @@ This project serves as a learning experience for backend development with Vapor.
 - ✅ Password hashing with Vapor's built-in hasher
 - ✅ Database migration for users table
 - ✅ Swift 6.0 concurrency support (@Sendable)
+- ✅ JWT authentication system with login endpoint
 
 ### In Progress
-- 🔄 JWT authentication system
-- 🔄 User login/logout endpoints
+- 🔄 User logout endpoint
 
 ### Planned Features
 - 📋 Categories and Habits CRUD operations

@@ -15,16 +15,51 @@ struct UserController: RouteCollection {
 
         // /api/register
         api.post("register", use: register)
+        
+        // /api/login
+        api.post("login", use: login)
+    }
+    
+    @Sendable func login(req: Request) async throws ->  LoginResponseDTO {
+        
+        // decode the request
+        let user = try req.content.decode(User.self)
+        
+        // check if the user is in DB
+        guard let existingUser = try await User.query(on: req.db)
+            .filter(\.$username == user.username)
+            .first() else {
+                throw Abort(.badRequest)
+            }
+        
+        // check the password
+        let result = try await req.password.async.verify(user.password, created: existingUser.password)
+        if !result {
+            throw Abort(.unauthorized)
+        }
+        
+        // generate the token and return it to the user
+        let authPayload = try AuthPayload(
+            expiration: .init(value: .distantFuture),
+            userId: existingUser.requireID()
+        )
+        return try await LoginResponseDTO(error: false, token: req.jwt.sign(authPayload), userId: existingUser.requireID())
     }
 
     @Sendable func register(req: Request) async throws -> RegisterResponseDTO {
-        try User.validate(content: req)
-        
+        do {
+            try User.validate(content: req)
+        } catch let error as ValidationsError {
+            // 422 Unprocessable Entity for validation failures
+            throw Abort(.unprocessableEntity, reason: error.description)
+        }
+
         let user = try req.content.decode(User.self)
         if let _ = try await User.query(on: req.db)
             .filter(\.$username == user.username)
             .first() {
-            return RegisterResponseDTO(error: true, reason: "Username is already taken")
+            // 409 Conflict for username already taken
+            throw Abort(.conflict, reason: "Username is already taken")
         }
         
         // hash the password
