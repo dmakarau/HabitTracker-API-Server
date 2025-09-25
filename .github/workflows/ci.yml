@@ -11,27 +11,19 @@ jobs:
     name: Build and Test
     runs-on: ubuntu-latest
 
-    services:
-      postgres:
-        image: postgres:15
-        env:
-          POSTGRES_PASSWORD: vapor
-          POSTGRES_USER: vapor
-          POSTGRES_DB: vapor_test
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-        ports:
-          - 5432:5432
-
-    container:
-      image: swift:6.0-jammy
-
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
+
+    - name: Install Swift
+      uses: swift-actions/setup-swift@v2
+      with:
+        swift-version: "6.0"
+
+    - name: Install system dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y libssl-dev
 
     - name: Cache Swift Package Manager
       uses: actions/cache@v4
@@ -43,30 +35,17 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-swift-
 
-    - name: Install system dependencies
-      run: |
-        apt-get update
-        apt-get install -y libssl-dev libpq-dev
-
     - name: Resolve dependencies
       run: swift package resolve
 
     - name: Build project
       run: swift build --verbose
 
-    - name: Run tests with PostgreSQL
+    - name: Run tests
       env:
-        DATABASE_URL: postgres://vapor:vapor@postgres:5432/vapor_test
         JWT_SECRET: test-secret-key-for-ci
         LOG_LEVEL: info
       run: swift test --verbose
-
-    - name: Run tests with SQLite (fallback)
-      env:
-        LOG_LEVEL: info
-        JWT_SECRET: test-secret-key-for-ci
-      run: swift test --verbose
-      continue-on-error: true
 
   docker-build:
     name: Docker Build Test

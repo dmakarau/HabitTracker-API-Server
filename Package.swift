@@ -3,9 +3,6 @@ import PackageDescription
 
 let package = Package(
     name: "HabitTrackerAppServer",
-    platforms: [
-       .macOS(.v13)
-    ],
     dependencies: [
         // 💧 A server-side Swift web framework.
         .package(url: "https://github.com/vapor/vapor.git", from: "4.115.0"),
