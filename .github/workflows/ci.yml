@@ -1,0 +1,88 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  test:
+    name: Build and Test
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_PASSWORD: vapor
+          POSTGRES_USER: vapor
+          POSTGRES_DB: vapor_test
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+    container:
+      image: swift:6.0-jammy
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Cache Swift Package Manager
+      uses: actions/cache@v4
+      with:
+        path: |
+          .build
+          ~/.cache/org.swift.swiftpm
+        key: ${{ runner.os }}-swift-${{ hashFiles('Package.resolved') }}
+        restore-keys: |
+          ${{ runner.os }}-swift-
+
+    - name: Install system dependencies
+      run: |
+        apt-get update
+        apt-get install -y libssl-dev libpq-dev
+
+    - name: Resolve dependencies
+      run: swift package resolve
+
+    - name: Build project
+      run: swift build --verbose
+
+    - name: Run tests with PostgreSQL
+      env:
+        DATABASE_URL: postgres://vapor:vapor@postgres:5432/vapor_test
+        JWT_SECRET: test-secret-key-for-ci
+        LOG_LEVEL: info
+      run: swift test --verbose
+
+    - name: Run tests with SQLite (fallback)
+      env:
+        LOG_LEVEL: info
+        JWT_SECRET: test-secret-key-for-ci
+      run: swift test --verbose
+      continue-on-error: true
+
+  docker-build:
+    name: Docker Build Test
+    runs-on: ubuntu-latest
+    needs: test
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Build Docker image
+      run: docker build -t habit-tracker-test .
+
+    - name: Test Docker container
+      run: |
+        docker run -d --name test-container -p 8080:8080 habit-tracker-test serve --hostname 0.0.0.0 --port 8080
+        sleep 10
+        curl -f http://localhost:8080/hello || exit 1
+        docker stop test-container
