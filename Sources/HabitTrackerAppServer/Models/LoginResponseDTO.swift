@@ -11,7 +11,7 @@ import Vapor
 struct LoginResponseDTO: Content {
     
     let error: Bool
-    var reeason: String?
+    var reason: String?
     let token: String?
     let userId: UUID
     
