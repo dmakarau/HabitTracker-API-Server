@@ -7,9 +7,51 @@ on:
     branches: [ main, develop ]
 
 jobs:
-  test:
-    name: Build and Test
+  build:
+    name: Build
     runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Install Swift
+      shell: bash
+      run: |
+        # Download and install Swift 6.0 using corrected official method
+        SWIFT_VERSION=6.0
+        SWIFT_RELEASE=6.0-RELEASE
+        wget https://download.swift.org/swift-${SWIFT_VERSION}-release/ubuntu2204/swift-${SWIFT_RELEASE}/swift-${SWIFT_RELEASE}-ubuntu22.04.tar.gz
+        tar -xzf swift-${SWIFT_RELEASE}-ubuntu22.04.tar.gz
+        export PATH=$PWD/swift-${SWIFT_RELEASE}-ubuntu22.04/usr/bin:$PATH
+        echo "$PWD/swift-${SWIFT_RELEASE}-ubuntu22.04/usr/bin" >> $GITHUB_PATH
+        swift --version
+
+    - name: Install system dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y clang libicu70 libssl3 libxml2 libz3-dev libsqlite3-dev
+
+    - name: Cache Swift Package Manager
+      uses: actions/cache@v4
+      with:
+        path: |
+          .build
+          ~/.cache/org.swift.swiftpm
+        key: ${{ runner.os }}-swift-${{ hashFiles('Package.resolved') }}
+        restore-keys: |
+          ${{ runner.os }}-swift-
+
+    - name: Resolve dependencies
+      run: swift package resolve
+
+    - name: Build project
+      run: swift build --verbose
+
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    needs: build
 
     steps:
     - name: Checkout code
