@@ -29,13 +29,13 @@ struct UserController: RouteCollection {
         guard let existingUser = try await User.query(on: req.db)
             .filter(\.$username == user.username)
             .first() else {
-                throw Abort(.badRequest)
+                throw Abort(.badRequest, reason: "User not found")
             }
         
         // check the password
         let result = try await req.password.async.verify(user.password, created: existingUser.password)
         if !result {
-            throw Abort(.unauthorized)
+            throw Abort(.unauthorized, reason: "Wrong password")
         }
         
         // generate the token and return it to the user
