@@ -12,6 +12,7 @@ A Swift-based REST API server for habit tracking, built with the Vapor web frame
   - SQLite (development)
 - **Swift Version**: 6.0+
 - **Platform**: macOS 13+
+- **Shared DTOs**: HabitTrackerAppSharedDTO (external package)
 
 ## Features
 
@@ -124,14 +125,16 @@ HabitTracker-API-Server/
 │       │   └── UserController.swift # User registration/auth controller
 │       ├── Models/               # Data models
 │       │   ├── User.swift        # User model with validation
-│       │   ├── RegisterResponseDTO.swift # Registration response
-│       │   ├── AuthPayload.swift # JWT payload structure
-│       │   └── LoginResponseDTO.swift # Login response
+│       │   └── AuthPayload.swift # JWT payload structure
+│       ├── Extensions/           # Protocol conformances for shared types
+│       │   ├── RegisterResponseDTO+Extensions.swift # Vapor Content conformance
+│       │   └── LoginResponseDTO+Extensions.swift    # Vapor Content conformance
 │       └── Migrations/           # Database migrations
 │           └── CreateUsersTableMigration.swift
 ├── Tests/
 │   └── HabitTrackerAppServerTests/
-│       └── HabitTrackerAppServerTests.swift
+│       ├── HabitTrackerAppServerTests.swift
+│       └── HabitTrackerAppServerLoginTests.swift
 ├── Public/                       # Static files directory
 ├── Dockerfile                    # Docker configuration
 ├── docker-compose.yml           # Docker Compose configuration
@@ -181,18 +184,21 @@ This project serves as a learning experience for backend development with Vapor.
 - ✅ Basic Vapor server setup with routing infrastructure
 - ✅ User model with Fluent ORM integration
 - ✅ User registration endpoint with validation
-- ✅ Password hashing with Vapor's built-in hasher
+- ✅ User login endpoint with JWT token generation
+- ✅ Password hashing and verification
 - ✅ Database migration for users table
 - ✅ Swift 6.0 concurrency support (@Sendable)
-- ✅ JWT authentication system with login endpoint
+- ✅ Shared DTO package integration with @retroactive conformance
+- ✅ Test suite for authentication endpoints
 
 ### In Progress
 - 🔄 User logout endpoint
+- 🔄 Protected routes with JWT middleware
 
 ### Planned Features
 - 📋 Categories and Habits CRUD operations
 - 📋 Habit entries and calendar functionality
-- 📋 Protected routes with JWT middleware
+- 📋 JWT token refresh endpoint
 
 ## Contributing
 

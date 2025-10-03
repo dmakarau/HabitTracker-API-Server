@@ -8,6 +8,7 @@
 import Foundation
 import Vapor
 import Fluent
+import HabitTrackerAppSharedDTO
 
 struct UserController: RouteCollection {
     func boot(routes: any Vapor.RoutesBuilder) throws {

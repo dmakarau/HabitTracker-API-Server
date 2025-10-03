@@ -13,8 +13,8 @@ let package = Package(
         .package(url: "https://github.com/vapor/fluent.git", from: "4.12.0"),
         .package(url: "https://github.com/vapor/fluent-postgres-driver", from: "2.11.0"),
         .package(url: "https://github.com/vapor/fluent-sqlite-driver", from: "4.8.0"),
+        .package(url: "https://github.com/dmakarau/HabitTrackerAppSharedDTO.git", branch: "main"),
 
-        
         // 🔵 Non-blocking, event-driven networking for Swift. Used for custom executors
         .package(url: "https://github.com/apple/swift-nio.git", from: "2.65.0"),
     ],
@@ -24,6 +24,7 @@ let package = Package(
             dependencies: [
                 .product(name: "Vapor", package: "vapor"),
                 .product(name: "JWT", package: "jwt"),
+                .product(name: "HabitTrackerAppSharedDTO", package: "HabitTrackerAppSharedDTO"),
                 .product(name: "Fluent", package: "fluent"),
                 .product(name: "FluentPostgresDriver", package: "fluent-postgres-driver"),
                 .product(name: "FluentSQLiteDriver", package: "fluent-sqlite-driver"),
