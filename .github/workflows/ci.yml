@@ -18,9 +18,9 @@ jobs:
     - name: Install Swift
       shell: bash
       run: |
-        # Download and install Swift 6.0 using corrected official method
-        SWIFT_VERSION=6.0
-        SWIFT_RELEASE=6.0-RELEASE
+        # Download and install Swift 6.2 using corrected official method
+        SWIFT_VERSION=6.2
+        SWIFT_RELEASE=6.2-RELEASE
         wget https://download.swift.org/swift-${SWIFT_VERSION}-release/ubuntu2204/swift-${SWIFT_RELEASE}/swift-${SWIFT_RELEASE}-ubuntu22.04.tar.gz
         tar -xzf swift-${SWIFT_RELEASE}-ubuntu22.04.tar.gz
         export PATH=$PWD/swift-${SWIFT_RELEASE}-ubuntu22.04/usr/bin:$PATH
