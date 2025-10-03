@@ -9,6 +9,7 @@ import Foundation
 @testable import HabitTrackerAppServer
 import VaporTesting
 import Testing
+import HabitTrackerAppSharedDTO
 
 @Suite("App Login Tests")
 struct HabitTrackerAppServerLoginTests {

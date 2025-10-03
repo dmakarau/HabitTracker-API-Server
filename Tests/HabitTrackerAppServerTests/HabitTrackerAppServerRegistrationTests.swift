@@ -1,5 +1,6 @@
 @testable import HabitTrackerAppServer
 import VaporTesting
+import HabitTrackerAppSharedDTO
 import Testing
 
 @Suite("App Registration Tests")
