@@ -10,7 +10,7 @@ A Swift-based REST API server for habit tracking, built with the Vapor web frame
 - **Databases**:
   - PostgreSQL (production)
   - SQLite (development)
-- **Swift Version**: 6.0+
+- **Swift Version**: 6.2+
 - **Platform**: macOS 13+
 - **Shared DTOs**: HabitTrackerAppSharedDTO (external package)
 
@@ -57,7 +57,7 @@ A Swift-based REST API server for habit tracking, built with the Vapor web frame
 
 ### Prerequisites
 
-- Swift 6.0+ installed on your system
+- Swift 6.2+ installed on your system
 - Xcode (for macOS development)
 - Docker (optional, for containerized deployment)
 
@@ -187,7 +187,7 @@ This project serves as a learning experience for backend development with Vapor.
 - ✅ User login endpoint with JWT token generation
 - ✅ Password hashing and verification
 - ✅ Database migration for users table
-- ✅ Swift 6.0 concurrency support (@Sendable)
+- ✅ Swift 6.2 concurrency support (@Sendable)
 - ✅ Shared DTO package integration with @retroactive conformance
 - ✅ Test suite for authentication endpoints
 
