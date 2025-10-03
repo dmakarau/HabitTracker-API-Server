@@ -30,6 +30,7 @@ public func configure(_ app: Application) async throws {
     }
     
     app.migrations.add(CreateUsersTableMigration())
+    app.migrations.add(CreateHabitsCategoryTableMigration())
 
     // Auto-migrate in testing environment (creates tables automatically)
     if app.environment == .testing {
