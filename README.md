@@ -30,6 +30,9 @@ A Swift-based REST API server for habit tracking, built with the Vapor web frame
 - `POST /api/register` - User registration ✅
 - `POST /api/login` - User login ✅
 
+#### Categories
+- `POST /api/categories` - Create new category ✅
+
 ### Planned Endpoints
 
 #### Authentication
@@ -38,7 +41,6 @@ A Swift-based REST API server for habit tracking, built with the Vapor web frame
 
 #### Categories
 - `GET /api/categories` - Get all categories
-- `POST /api/categories` - Create new category
 - `PUT /api/categories/:id` - Update category
 - `DELETE /api/categories/:id` - Delete category
 
@@ -122,15 +124,19 @@ HabitTracker-API-Server/
 │       ├── configure.swift       # Application configuration
 │       ├── routes.swift          # Route definitions
 │       ├── Controllers/          # API controllers
-│       │   └── UserController.swift # User registration/auth controller
+│       │   ├── UserController.swift # User registration/auth controller
+│       │   └── HabitsController.swift # Habits and categories controller
 │       ├── Models/               # Data models
 │       │   ├── User.swift        # User model with validation
+│       │   ├── Category.swift    # Category model
 │       │   └── AuthPayload.swift # JWT payload structure
 │       ├── Extensions/           # Protocol conformances for shared types
 │       │   ├── RegisterResponseDTO+Extensions.swift # Vapor Content conformance
-│       │   └── LoginResponseDTO+Extensions.swift    # Vapor Content conformance
+│       │   ├── LoginResponseDTO+Extensions.swift    # Vapor Content conformance
+│       │   └── HabitsCategoryResponseDTO+Extensions.swift # Category DTO conformance
 │       └── Migrations/           # Database migrations
-│           └── CreateUsersTableMigration.swift
+│           ├── CreateUsersTableMigration.swift
+│           └── CreateHabitsCategoryTableMigration.swift
 ├── Tests/
 │   └── HabitTrackerAppServerTests/
 │       ├── HabitTrackerAppServerTests.swift
@@ -187,16 +193,20 @@ This project serves as a learning experience for backend development with Vapor.
 - ✅ User login endpoint with JWT token generation
 - ✅ Password hashing and verification
 - ✅ Database migration for users table
+- ✅ Category model with database migration
+- ✅ Category creation endpoint with JWT authentication
 - ✅ Swift 6.0 concurrency support (@Sendable)
 - ✅ Shared DTO package integration with @retroactive conformance
 - ✅ Test suite for authentication endpoints
+- ✅ Test suite for category operations
 
 ### In Progress
 - 🔄 User logout endpoint
 - 🔄 Protected routes with JWT middleware
 
 ### Planned Features
-- 📋 Categories and Habits CRUD operations
+- 📋 Remaining Categories CRUD operations (GET, PUT, DELETE)
+- 📋 Habits CRUD operations
 - 📋 Habit entries and calendar functionality
 - 📋 JWT token refresh endpoint
 
