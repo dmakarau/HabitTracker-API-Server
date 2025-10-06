@@ -38,6 +38,7 @@ public func configure(_ app: Application) async throws {
     }
 
     try app.register(collection: UserController())
+    try app.register(collection: HabitsController())
     
 
     // JWT configuration: use environment variable or default for testing
