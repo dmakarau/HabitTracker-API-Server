@@ -7,6 +7,7 @@
 
 import Foundation
 @testable import HabitTrackerAppServer
+import HabitTrackerAppSharedDTO
 import VaporTesting
 import Testing
 

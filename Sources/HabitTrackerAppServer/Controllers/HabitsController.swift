@@ -26,18 +26,27 @@ struct HabitsController: RouteCollection {
         guard let userId = req.parameters.get("userId", as: UUID.self) else {
             throw Abort(.badRequest, reason: "Missing or invalid userId parameter")
         }
-        // DTO for the request
-        let habitsCategoryRequestDTO = try req.content.decode(HabitsCategoryRequestDTO.self)
+        
+        // Decode request as a simple dictionary to get name and colorCode
+        let requestData = try req.content.decode([String: String].self)
+        guard let name = requestData["name"],
+              let colorCode = requestData["colorCode"] else {
+            throw Abort(.badRequest, reason: "Missing required fields: name and colorCode")
+        }
         
         let habitCategory = Category(
-            name: habitsCategoryRequestDTO.name,
-            colorCode: habitsCategoryRequestDTO.colorCode,
+            name: name,
+            colorCode: colorCode,
             userId: userId
         )
         try await habitCategory.save(on: req.db)
         
-        // DTO for thre response
+        // After saving, ensure the ID is assigned
+        guard habitCategory.id != nil else {
+            throw Abort(.internalServerError, reason: "Failed to get ID after saving category")
+        }
         
+        // DTO for the response
         guard let categoryResponseDTO = HabitsCategoryResponseDTO(habitCategory) else {
             throw Abort(.internalServerError, reason: "Failed to create response DTO")
         }
