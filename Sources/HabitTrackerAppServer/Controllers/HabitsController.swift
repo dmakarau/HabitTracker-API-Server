@@ -24,25 +24,36 @@ struct HabitsController: RouteCollection {
 
         // get the user id
         guard let userId = req.parameters.get("userId", as: UUID.self) else {
-            throw Abort(.badRequest, reason: "Missing or invalid userId parameter")
+            throw Abort(.badRequest, reason: "Missing or invalid userId parameter") // HTTP 400
         }
 
         // Decode request as a simple dictionary to get name and colorCode
         let requestData = try req.content.decode([String: String].self)
         guard let name = requestData["name"],
               let colorCode = requestData["colorCode"] else {
-            throw Abort(.badRequest, reason: "Missing required fields: name and colorCode")
+            throw Abort(.badRequest, reason: "Missing required fields: name and colorCode") // HTTP 400
         }
 
         // Validate empty name
         guard !name.isEmpty else {
-            throw Abort(.badRequest, reason: "Category name cannot be empty")
+            throw Abort(.badRequest, reason: "Category name cannot be empty") // HTTP 400
         }
 
         // Validate color code format (#RRGGBB)
         let colorCodePattern = #"^#([A-Fa-f0-9]{6})$"#
         guard colorCode.range(of: colorCodePattern, options: .regularExpression) != nil else {
-            throw Abort(.badRequest, reason: "Color code should be in format #RRGGBB")
+            throw Abort(.badRequest, reason: "Color code should be in format #RRGGBB") // HTTP 400
+        }
+
+        // Check for duplicate category name for this user (case-insensitive)
+        let existingCategories = try await Category.query(on: req.db)
+            .filter(\.$user.$id, .equal, userId)
+            .all()
+
+        let existingCategory = existingCategories.first(where: { $0.name.lowercased() == name.lowercased() })
+
+        if existingCategory != nil {
+            throw Abort(.conflict, reason: "A category with this name already exists") // HTTP 409
         }
 
         let habitCategory = Category(
@@ -51,15 +62,15 @@ struct HabitsController: RouteCollection {
             userId: userId
         )
         try await habitCategory.save(on: req.db)
-        
+
         // After saving, ensure the ID is assigned
         guard habitCategory.id != nil else {
-            throw Abort(.internalServerError, reason: "Failed to get ID after saving category")
+            throw Abort(.internalServerError, reason: "Failed to get ID after saving category") // HTTP 500
         }
-        
+
         // DTO for the response
         guard let categoryResponseDTO = HabitsCategoryResponseDTO(habitCategory) else {
-            throw Abort(.internalServerError, reason: "Failed to create response DTO")
+            throw Abort(.internalServerError, reason: "Failed to create response DTO") // HTTP 500
         }
         
         return categoryResponseDTO
