@@ -1,5 +1,5 @@
 //  Category.swift
-//  HabitTrackerAppServer
+//  GrowBitAppServer
 //
 //  Created by Denis Makarau on 03.10.25.
 //

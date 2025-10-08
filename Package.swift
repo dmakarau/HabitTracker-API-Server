@@ -2,7 +2,7 @@
 import PackageDescription
 
 let package = Package(
-    name: "HabitTrackerAppServer",
+    name: "GrowBitAppServer",
     platforms: [
         .macOS(.v13)
     ],
@@ -13,18 +13,18 @@ let package = Package(
         .package(url: "https://github.com/vapor/fluent.git", from: "4.12.0"),
         .package(url: "https://github.com/vapor/fluent-postgres-driver", from: "2.11.0"),
         .package(url: "https://github.com/vapor/fluent-sqlite-driver", from: "4.8.0"),
-        .package(url: "https://github.com/dmakarau/HabitTrackerAppSharedDTO.git", branch: "main"),
+        .package(url: "https://github.com/dmakarau/GrowBitSharedDTO", branch: "main"),
 
         // 🔵 Non-blocking, event-driven networking for Swift. Used for custom executors
         .package(url: "https://github.com/apple/swift-nio.git", from: "2.65.0"),
     ],
     targets: [
         .executableTarget(
-            name: "HabitTrackerAppServer",
+            name: "GrowBitAppServer",
             dependencies: [
                 .product(name: "Vapor", package: "vapor"),
                 .product(name: "JWT", package: "jwt"),
-                .product(name: "HabitTrackerAppSharedDTO", package: "HabitTrackerAppSharedDTO"),
+                .product(name: "GrowBitSharedDTO", package: "GrowBitSharedDTO"),
                 .product(name: "Fluent", package: "fluent"),
                 .product(name: "FluentPostgresDriver", package: "fluent-postgres-driver"),
                 .product(name: "FluentSQLiteDriver", package: "fluent-sqlite-driver"),
@@ -34,10 +34,11 @@ let package = Package(
             swiftSettings: swiftSettings
         ),
         .testTarget(
-            name: "HabitTrackerAppServerTests",
+            name: "GrowBitAppServerTests",
             dependencies: [
-                .target(name: "HabitTrackerAppServer"),
+                .target(name: "GrowBitAppServer"),
                 .product(name: "VaporTesting", package: "vapor"),
+                .product(name: "GrowBitSharedDTO", package: "GrowBitSharedDTO"),
             ],
             swiftSettings: swiftSettings
         )

@@ -1,18 +1,18 @@
 //
-//  HabitTrackerAppServerSavingCategoryTests.swift
-//  HabitTrackerAppServer
+//  GrowBitAppServerSavingCategoryTests.swift
+//  GrowBitAppServer
 //
 //  Created by Denis Makarau on 06.10.25.
 //
 
-@testable import HabitTrackerAppServer
+@testable import GrowBitAppServer
 import VaporTesting
-import HabitTrackerAppSharedDTO
+import GrowBitSharedDTO
 import Testing
 import Fluent
 
 @Suite("Category Creation Tests")
-struct HabitTrackerAppServerSavingCategoryTests {
+struct GrowBitAppServerSavingCategoryTests {
 
     @Test("Category creation - Success")
     func categoryCreationSuccess() async throws {
@@ -45,7 +45,7 @@ struct HabitTrackerAppServerSavingCategoryTests {
                 try req.content.encode(requestBody)
             } afterResponse: { res in
                 #expect(res.status == .ok)
-                let response = try res.content.decode(HabitsCategoryResponseDTO.self)
+                let response = try res.content.decode(CategoryResponseDTO.self)
                 #expect(response.name == "test category")
                 #expect(response.colorCode == "#FFFFFF")
             }
@@ -227,7 +227,7 @@ struct HabitTrackerAppServerSavingCategoryTests {
                     try req.content.encode(requestBody)
                 } afterResponse: { res in
                     #expect(res.status == .ok)
-                    let response = try res.content.decode(HabitsCategoryResponseDTO.self)
+                    let response = try res.content.decode(CategoryResponseDTO.self)
                     #expect(response.colorCode.uppercased() == color.uppercased())
                 }
             }

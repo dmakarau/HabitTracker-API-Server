@@ -18,7 +18,7 @@ x-shared_environment: &shared_environment
 
 services:
   app:
-    image: habit-tracker-app-server:latest
+    image: growbit-app-server:latest
     build:
       context: .
     environment:

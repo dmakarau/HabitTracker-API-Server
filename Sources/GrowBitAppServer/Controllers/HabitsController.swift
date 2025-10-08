@@ -1,13 +1,13 @@
 //
 //  HabitsController.swift
-//  HabitTrackerAppServer
+//  GrowBitAppServer
 //
 //  Created by Denis Makarau on 03.10.25.
 //
 
 import Foundation
 import Vapor
-import HabitTrackerAppSharedDTO
+import GrowBitSharedDTO
 
 struct HabitsController: RouteCollection {
     func boot(routes: any RoutesBuilder) throws {
@@ -20,7 +20,7 @@ struct HabitsController: RouteCollection {
         api.post("categories", use: saveHabitCategory)
     }
     
-    @Sendable func saveHabitCategory(req: Request) async throws -> HabitsCategoryResponseDTO {
+    @Sendable func saveHabitCategory(req: Request) async throws -> CategoryResponseDTO {
 
         // get the user id
         guard let userId = req.parameters.get("userId", as: UUID.self) else {
@@ -69,7 +69,7 @@ struct HabitsController: RouteCollection {
         }
 
         // DTO for the response
-        guard let categoryResponseDTO = HabitsCategoryResponseDTO(habitCategory) else {
+        guard let categoryResponseDTO = CategoryResponseDTO(habitCategory) else {
             throw Abort(.internalServerError, reason: "Failed to create response DTO") // HTTP 500
         }
         

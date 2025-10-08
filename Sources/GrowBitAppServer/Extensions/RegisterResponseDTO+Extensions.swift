@@ -1,13 +1,13 @@
 //
 //  RegisterResponseDTO.swift
-//  HabitTrackerAppServer
+//  GrowBitAppServer
 //
 //  Created by Denis Makarau on 03.10.25.
 //
 
 import Foundation
 import Vapor
-import HabitTrackerAppSharedDTO
+import GrowBitSharedDTO
 
 extension RegisterResponseDTO: @retroactive RequestDecodable {}
 extension RegisterResponseDTO: @retroactive ResponseEncodable {}

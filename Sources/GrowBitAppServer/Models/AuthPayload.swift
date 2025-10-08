@@ -1,6 +1,6 @@
 //
 //  AuthPayload.swift
-//  HabitTrackerAppServer
+//  GrowBitAppServer
 //
 //  Created by Denis Makarau on 25.09.25.
 //

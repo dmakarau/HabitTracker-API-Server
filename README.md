@@ -1,4 +1,4 @@
-# HabitTracker API Server
+# GrowBit API Server
 
 A Swift-based REST API server for habit tracking, built with the Vapor web framework.
 
@@ -12,7 +12,7 @@ A Swift-based REST API server for habit tracking, built with the Vapor web frame
   - SQLite (development)
 - **Swift Version**: 6.0+
 - **Platform**: macOS 13+
-- **Shared DTOs**: HabitTrackerAppSharedDTO (external package)
+- **Shared DTOs**: GrowBitSharedDTO (external package)
 
 ## Features
 
@@ -67,8 +67,8 @@ A Swift-based REST API server for habit tracking, built with the Vapor web frame
 
 1. Clone the repository:
 ```bash
-git clone <repository-url>
-cd HabitTracker-API-Server
+git clone https://github.com/dmakarau/GrowBit-API-Server.git
+cd GrowBit-API-Server
 ```
 
 2. Resolve dependencies:
@@ -91,7 +91,7 @@ openssl rand -base64 32
 
 #### Development Mode
 ```bash
-swift run HabitTrackerAppServer serve --hostname 0.0.0.0 --port 8080
+swift run GrowBitAppServer serve --hostname 0.0.0.0 --port 8080
 ```
 
 #### Using Docker
@@ -116,10 +116,10 @@ swift test
 ## Project Structure
 
 ```
-HabitTracker-API-Server/
+GrowBit-API-Server/
 ├── Package.swift                 # Swift Package Manager configuration
 ├── Sources/
-│   └── HabitTrackerAppServer/
+│   └── GrowBitAppServer/
 │       ├── entrypoint.swift      # Application entry point
 │       ├── configure.swift       # Application configuration
 │       ├── routes.swift          # Route definitions
@@ -133,14 +133,14 @@ HabitTracker-API-Server/
 │       ├── Extensions/           # Protocol conformances for shared types
 │       │   ├── RegisterResponseDTO+Extensions.swift # Vapor Content conformance
 │       │   ├── LoginResponseDTO+Extensions.swift    # Vapor Content conformance
-│       │   └── HabitsCategoryResponseDTO+Extensions.swift # Category DTO conformance
+│       │   └── CategoryResponseDTO+Extensions.swift # Category DTO conformance
 │       └── Migrations/           # Database migrations
 │           ├── CreateUsersTableMigration.swift
 │           └── CreateHabitsCategoryTableMigration.swift
 ├── Tests/
-│   └── HabitTrackerAppServerTests/
-│       ├── HabitTrackerAppServerTests.swift
-│       └── HabitTrackerAppServerLoginTests.swift
+│   └── GrowBitAppServerTests/
+│       ├── GrowBitAppServerTests.swift
+│       └── GrowBitAppServerLoginTests.swift
 ├── Public/                       # Static files directory
 ├── Dockerfile                    # Docker configuration
 ├── docker-compose.yml           # Docker Compose configuration
@@ -153,7 +153,7 @@ Create a `.env` file in the root directory with the following variables:
 
 ```bash
 # Database Configuration
-DATABASE_URL=postgresql://username:password@localhost:5432/habittracker_db
+DATABASE_URL=postgresql://username:password@localhost:5432/growbit_db
 
 # JWT Configuration
 JWT_SECRET=your-super-secret-jwt-key-here

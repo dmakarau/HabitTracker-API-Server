@@ -1,6 +1,6 @@
 //
 //  UserController.swift
-//  HabitTrackerAppServer
+//  GrowBitAppServer
 //
 //  Created by Denis Makarau on 24.09.25.
 //
@@ -8,7 +8,7 @@
 import Foundation
 import Vapor
 import Fluent
-import HabitTrackerAppSharedDTO
+import GrowBitSharedDTO
 
 struct UserController: RouteCollection {
     func boot(routes: any Vapor.RoutesBuilder) throws {

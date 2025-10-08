@@ -1,10 +1,10 @@
-@testable import HabitTrackerAppServer
+@testable import GrowBitAppServer
 import VaporTesting
-import HabitTrackerAppSharedDTO
+import GrowBitSharedDTO
 import Testing
 
 @Suite("App Registration Tests")
-struct HabitTrackerAppServerRegistrationTests {
+struct GrowBitAppServerRegistrationTests {
     @Test("Test Hello World Route")
     func helloWorld() async throws {
         try await withApp(configure: configure) { app in

@@ -1,6 +1,6 @@
 //
 //  CreateUsersTableMigration.swift.swift
-//  HabitTrackerAppServer
+//  GrowBitAppServer
 //
 //  Created by Denis Makarau on 24.09.25.
 //
