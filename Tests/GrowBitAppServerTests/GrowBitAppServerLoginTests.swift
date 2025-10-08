@@ -10,6 +10,7 @@ import Foundation
 import GrowBitSharedDTO
 import VaporTesting
 import Testing
+import HabitTrackerAppSharedDTO
 
 @Suite("App Login Tests")
 struct GrowBitAppServerLoginTests {
