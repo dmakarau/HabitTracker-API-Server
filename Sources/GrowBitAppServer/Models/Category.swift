@@ -34,8 +34,8 @@ final class Category: Model, Validatable, Content, @unchecked Sendable {
     
     static func validations(_ validations: inout Validations) {
         validations.add("name", as: String.self, is: !.empty, customFailureDescription: "Category name cannot be empty")
-        validations.add("colorCode", as: String.self, is: !.empty, customFailureDescription: "Color coe cannot be empty")
-        validations.add("color_code", as: String.self, is: .pattern(#"^#([A-Fa-f0-9]{6})$"#), customFailureDescription: "Color code should be in format #RRGGBB")
+        validations.add("colorCode", as: String.self, is: !.empty, customFailureDescription: "Color code cannot be empty")
+        validations.add("color_code", as: String.self, is: .pattern(#"^#?([A-Fa-f0-9]{6})$"#), customFailureDescription: "Color code should be in format RRGGBB or #RRGGBB")
     }
     
 
