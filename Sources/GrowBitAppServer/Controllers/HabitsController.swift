@@ -39,11 +39,14 @@ struct HabitsController: RouteCollection {
             throw Abort(.badRequest, reason: "Category name cannot be empty") // HTTP 400
         }
 
-        // Validate color code format (#RRGGBB)
-        let colorCodePattern = #"^#([A-Fa-f0-9]{6})$"#
+        // Validate color code format (RRGGBB or #RRGGBB)
+        let colorCodePattern = #"^#?([A-Fa-f0-9]{6})$"#
         guard colorCode.range(of: colorCodePattern, options: .regularExpression) != nil else {
-            throw Abort(.badRequest, reason: "Color code should be in format #RRGGBB") // HTTP 400
+            throw Abort(.badRequest, reason: "Color code should be in format RRGGBB or #RRGGBB") // HTTP 400
         }
+
+        // Normalize color code to always include #
+        let normalizedColorCode = colorCode.hasPrefix("#") ? colorCode : "#\(colorCode)"
 
         // Check for duplicate category name for this user (case-insensitive)
         let existingCategories = try await Category.query(on: req.db)
@@ -58,7 +61,7 @@ struct HabitsController: RouteCollection {
 
         let habitCategory = Category(
             name: name,
-            colorCode: colorCode,
+            colorCode: normalizedColorCode,
             userId: userId
         )
         try await habitCategory.save(on: req.db)
