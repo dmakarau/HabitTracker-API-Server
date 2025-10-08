@@ -1,5 +1,5 @@
 //
-//  HabitsCategoryResponseDTO+Extensions.swift
+//  CategoryResponseDTO+Extensions.swift
 //  GrowBitAppServer
 //
 //  Created by Denis Makarau on 06.10.25.
