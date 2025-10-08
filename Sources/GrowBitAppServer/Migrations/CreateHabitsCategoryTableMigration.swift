@@ -1,0 +1,27 @@
+//
+//  CreateHabitsCategoryTableMigration.swift
+//  GrowBitAppServer
+//
+//  Created by Denis Makarau on 03.10.25.
+//
+
+import Foundation
+import Fluent
+
+struct CreateHabitsCategoryTableMigration: AsyncMigration {
+    
+    func prepare(on database: any Database) async throws {
+        try await database.schema("habits_categories")
+            .id()
+            .field("name", .string, .required)
+            .field("color_code", .string, .required)
+            .field("user_id", .uuid, .required, .references("users", "id"))
+            .create()
+    }
+    
+    func revert(on database: any Database) async throws {
+        try await database.schema("habits_categories")
+            .delete()
+    }
+}
+

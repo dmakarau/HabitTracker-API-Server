@@ -10,6 +10,7 @@ db.sqlite
 .env.*
 !.env.example
 default.profraw
+.vscode
 
 # Development guidance for Claude Code
 CLAUDE.md

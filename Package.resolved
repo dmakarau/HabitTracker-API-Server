@@ -1,5 +1,5 @@
 {
-  "originHash" : "b3513f2753a0dd43441713a534385b8dee7bdf3f4d6bd2c6b9d224ad321195f6",
+  "originHash" : "790b17c32995ac1583b6f3ad5a89c48f9af9e412b7c71c692b3de104b7435fd5",
   "pins" : [
     {
       "identity" : "async-http-client",
@@ -65,12 +65,12 @@
       }
     },
     {
-      "identity" : "habittrackerappshareddto",
+      "identity" : "growbitshareddto",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/dmakarau/HabitTrackerAppSharedDTO.git",
+      "location" : "https://github.com/dmakarau/GrowBitSharedDTO",
       "state" : {
         "branch" : "main",
-        "revision" : "342c7c33c0e9fc30747dbc1d100939dbed3118cd"
+        "revision" : "8d00b4d406269648f863d4e6cf02e33073445eb7"
       }
     },
     {

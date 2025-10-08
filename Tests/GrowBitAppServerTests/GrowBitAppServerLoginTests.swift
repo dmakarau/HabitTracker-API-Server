@@ -1,18 +1,19 @@
 //
-//  HabitTrackerAppServerLoginTests.swift
-//  HabitTrackerAppServer
+//  GrowBitAppServerLoginTests.swift
+//  GrowBitAppServer
 //
 //  Created by Denis Makarau on 26.09.25.
 //
 
 import Foundation
-@testable import HabitTrackerAppServer
+@testable import GrowBitAppServer
+import GrowBitSharedDTO
 import VaporTesting
 import Testing
 import HabitTrackerAppSharedDTO
 
 @Suite("App Login Tests")
-struct HabitTrackerAppServerLoginTests {
+struct GrowBitAppServerLoginTests {
     
     private func createUser(in app: Application, username: String = "testuser") async throws {
         let requestBody = User(username: username, password: "password")
