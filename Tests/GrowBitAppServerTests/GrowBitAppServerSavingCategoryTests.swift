@@ -185,7 +185,7 @@ struct GrowBitAppServerSavingCategoryTests {
             // Request body with invalid color code (missing #)
             let requestBody = [
                 "name": "test category",
-                "colorCode": "FFFFFF"
+                "colorCode": "FF$FF§FF"
             ]
 
             try await app.testing().test(.POST, "/api/\(userId.uuidString)/categories") { req in
@@ -214,7 +214,7 @@ struct GrowBitAppServerSavingCategoryTests {
                 throw TestError.userCreationFailed
             }
 
-            // Test various valid color codes
+            // Test various valid color codes with #
             let validColors = ["#000000", "#FFFFFF", "#FF0000", "#00FF00", "#0000FF", "#abcdef", "#123456"]
 
             for (index, color) in validColors.enumerated() {
@@ -229,6 +229,50 @@ struct GrowBitAppServerSavingCategoryTests {
                     #expect(res.status == .ok)
                     let response = try res.content.decode(CategoryResponseDTO.self)
                     #expect(response.colorCode.uppercased() == color.uppercased())
+                }
+            }
+        }
+    }
+
+    @Test("Category creation - Success - Color normalization")
+    func categoryCreationSuccessColorNormalization() async throws {
+        try await withApp(configure: configure) { app in
+            // Create a user
+            let userRequestBody = User(username: "testuser7", password: "password")
+            try await app.testing().test(.POST, "/api/register") { req in
+                try req.content.encode(userRequestBody)
+            } afterResponse: { res in
+                #expect(res.status == .ok)
+            }
+
+            guard let createdUser = try await User.query(on: app.db)
+                .filter(\.$username == "testuser7")
+                .first(),
+                  let userId = createdUser.id else {
+                throw TestError.userCreationFailed
+            }
+
+            // Test that colors without # are normalized to include #
+            let testCases: [(input: String, expected: String)] = [
+                ("FF0000", "#FF0000"),
+                ("00FF00", "#00FF00"),
+                ("0000FF", "#0000FF"),
+                ("abcdef", "#ABCDEF"),
+                ("123456", "#123456")
+            ]
+
+            for (index, testCase) in testCases.enumerated() {
+                let requestBody = [
+                    "name": "normalized category \(index)",
+                    "colorCode": testCase.input
+                ]
+
+                try await app.testing().test(.POST, "/api/\(userId.uuidString)/categories") { req in
+                    try req.content.encode(requestBody)
+                } afterResponse: { res in
+                    #expect(res.status == .ok)
+                    let response = try res.content.decode(CategoryResponseDTO.self)
+                    #expect(response.colorCode.uppercased() == testCase.expected.uppercased())
                 }
             }
         }
