@@ -18,6 +18,14 @@ struct HabitsController: RouteCollection {
         // POST: saving a habbit category
         // /api/:userId/categories
         api.post("categories", use: saveHabitCategory)
+        
+        // GET: getting all categories for a user
+        // /api/:userId/categories
+        api.get("categories", use: getAllCategoriesForUser)
+        
+        // DELETE: deleting a category
+        // /api/:userId/categories/:categoryId
+        api.delete("categories", ":categoryId", use: deleteCategory)
     }
     
     @Sendable func saveHabitCategory(req: Request) async throws -> CategoryResponseDTO {
@@ -78,5 +86,43 @@ struct HabitsController: RouteCollection {
         
         return categoryResponseDTO
     }
+    
+    @Sendable func getAllCategoriesForUser(req: Request) async throws -> [CategoryResponseDTO] {
         
+        // get the user id
+        guard let userId = req.parameters.get("userId", as: UUID.self) else {
+            throw Abort(.badRequest, reason: "Missing or invalid userId parameter") // HTTP 400
+        }
+        
+        // get all categories
+        return try await Category.query(on: req.db)
+            .filter(\.$user.$id, .equal, userId)
+            .all()
+            .compactMap(CategoryResponseDTO.init)
+    }
+    
+    @Sendable func deleteCategory(req: Request) async throws -> CategoryResponseDTO {
+        // get the user id
+        guard let userId = req.parameters.get("userId", as: UUID.self),
+              let categoryId = req.parameters.get("categoryId", as: UUID.self)
+        else {
+            throw Abort(.badRequest, reason: "Missing or invalid userId parameter") // HTTP 400
+        }
+        
+        guard let category = try await Category.query(on: req.db)
+            .filter(\.$user.$id, .equal, userId)
+            .filter(\.$id, .equal, categoryId)
+            .first() else {
+                throw Abort(.notFound, reason: "Category not found for this user") // HTTP 404
+            }
+        
+        try await category.delete(on: req.db)
+        
+        guard let categoryDTO = CategoryResponseDTO(category) else {
+            throw Abort(.internalServerError, reason: "Failed to create response DTO") // HTTP 500
+        }
+        
+        return categoryDTO
+    }
+
 }
