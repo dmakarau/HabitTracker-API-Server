@@ -17,7 +17,7 @@ struct GrowBitAppServerSavingCategoryTests {
     @Test("Category creation - Success")
     func categoryCreationSuccess() async throws {
         try await withApp(configure: configure) { app in
-            // First create a user using the same pattern as other tests
+            // First create a user
             let userRequestBody = User(username: "testuser", password: "password")
             try await app.testing().test(.POST, "/api/register") { req in
                 try req.content.encode(userRequestBody)
