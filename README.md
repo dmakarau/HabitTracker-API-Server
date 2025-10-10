@@ -31,7 +31,9 @@ A Swift-based REST API server for habit tracking, built with the Vapor web frame
 - `POST /api/login` - User login ✅
 
 #### Categories
-- `POST /api/categories` - Create new category ✅
+- `POST /api/:userId/categories` - Create new category ✅
+- `GET /api/:userId/categories` - Get all categories for user ✅
+- `DELETE /api/:userId/categories/:categoryId` - Delete category ✅
 
 ### Planned Endpoints
 
@@ -40,9 +42,7 @@ A Swift-based REST API server for habit tracking, built with the Vapor web frame
 - `POST /api/logout` - User logout
 
 #### Categories
-- `GET /api/categories` - Get all categories
-- `PUT /api/categories/:id` - Update category
-- `DELETE /api/categories/:id` - Delete category
+- `PUT /api/:userId/categories/:id` - Update category
 
 #### Habits
 - `GET /api/habits` - Get all habits
@@ -194,18 +194,22 @@ This project serves as a learning experience for backend development with Vapor.
 - ✅ Password hashing and verification
 - ✅ Database migration for users table
 - ✅ Category model with database migration
-- ✅ Category creation endpoint with JWT authentication
+- ✅ Categories CRUD operations (Create, Read, Delete)
+- ✅ Category validation (color code format, empty names, duplicate names)
+- ✅ Color code normalization (RRGGBB format with # prefix)
+- ✅ User ownership verification for category operations
 - ✅ Swift 6.2 concurrency support (@Sendable)
 - ✅ Shared DTO package integration with @retroactive conformance
 - ✅ Test suite for authentication endpoints
-- ✅ Test suite for category operations
+- ✅ Test suite for category operations (create, fetch, delete)
+- ✅ Comprehensive error handling with proper HTTP status codes
 
 ### In Progress
 - 🔄 User logout endpoint
 - 🔄 Protected routes with JWT middleware
 
 ### Planned Features
-- 📋 Remaining Categories CRUD operations (GET, PUT, DELETE)
+- 📋 Category UPDATE operation
 - 📋 Habits CRUD operations
 - 📋 Habit entries and calendar functionality
 - 📋 JWT token refresh endpoint
