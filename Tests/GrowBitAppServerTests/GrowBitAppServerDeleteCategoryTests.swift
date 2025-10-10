@@ -111,7 +111,6 @@ struct GrowBitAppServerDeleteCategoryTests {
 
             #expect(categoryIds.count == 3)
 
-            // TODO(human)
             // Delete the category
             try await app.testing().test(.DELETE, "/api/\(userId.uuidString)/categories/\(categoryIds[1].uuidString)") { req in
                 // No body needed for DELETE request
@@ -135,7 +134,7 @@ struct GrowBitAppServerDeleteCategoryTests {
                 .first()
             #expect(category != nil)
             
-            // Verify the category still exists for user1
+            // Verify the third category still exists for user1
             category = try await Category.query(on: app.db)
                 .filter(\.$id == categoryIds[2])
                 .first()
