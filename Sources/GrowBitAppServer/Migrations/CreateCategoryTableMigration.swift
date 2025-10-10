@@ -1,5 +1,5 @@
 //
-//  CreateHabitsCategoryTableMigration.swift
+//  CreateCategoryTableMigration.swift
 //  GrowBitAppServer
 //
 //  Created by Denis Makarau on 03.10.25.
@@ -8,10 +8,10 @@
 import Foundation
 import Fluent
 
-struct CreateHabitsCategoryTableMigration: AsyncMigration {
+struct CreateCategoryTableMigration: AsyncMigration {
     
     func prepare(on database: any Database) async throws {
-        try await database.schema("habits_categories")
+        try await database.schema("categories")
             .id()
             .field("name", .string, .required)
             .field("color_code", .string, .required)
@@ -20,7 +20,7 @@ struct CreateHabitsCategoryTableMigration: AsyncMigration {
     }
     
     func revert(on database: any Database) async throws {
-        try await database.schema("habits_categories")
+        try await database.schema("categories")
             .delete()
     }
 }
