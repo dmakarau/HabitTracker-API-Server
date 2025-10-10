@@ -26,7 +26,56 @@ struct HabitsController: RouteCollection {
         // DELETE: deleting a category
         // /api/:userId/categories/:categoryId
         api.delete("categories", ":categoryId", use: deleteCategory)
+        
+        // POST: saving an item
+        // /api/:userId/categories/:categoryId/items
+        api.post("categories", ":categoryId", "items", use: saveItem)
+            
+        
     }
+    
+    @Sendable func saveItem(req: Request) async throws -> ItemResponseDTO {
+        // get the user id
+        guard let userId = req.parameters.get("userId", as: UUID.self),
+              let categoryId = req.parameters.get("categoryId", as: UUID.self)
+        else {
+            throw Abort(.badRequest, reason: "Missing or invalid userId parameter") // HTTP 400
+        }
+        
+        // find the user
+        guard let _ = try await User.find(userId, on: req.db) else {
+            throw Abort(.notFound, reason: "User not found") // HTTP 404
+        }
+        
+        // find the category
+        guard let _ = try await Category.query(on: req.db)
+            .filter(\.$user.$id, .equal, userId)
+            .filter(\.$id, .equal, categoryId)
+            .first()
+        else {
+            throw Abort(.notFound, reason: "Category not found") // HTTP 404
+        }
+        
+        // decoding of ItemRequestDTO
+        let itemRequestDTO = try req.content.decode(ItemRequestDTO.self)
+        
+        let item = Item(
+            title: itemRequestDTO.title,
+            startDate: itemRequestDTO.startDate,
+            frequency: .init(from: itemRequestDTO.frequency),
+            goalDays: itemRequestDTO.goalDays,
+            categoryId: categoryId
+        )
+        
+        try await item.save(on: req.db)
+        
+        guard let itemResponseDTO = ItemResponseDTO(item) else {
+            throw Abort(.internalServerError, reason: "Failed to create response DTO") // HTTP 500
+        }
+        
+        return itemResponseDTO
+    }
+
     
     @Sendable func saveHabitCategory(req: Request) async throws -> CategoryResponseDTO {
 

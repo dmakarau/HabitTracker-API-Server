@@ -9,7 +9,7 @@ import Fluent
 import Vapor
 
 final class Category: Model, Validatable, Content, @unchecked Sendable {
-    static let schema = "habits_categories"
+    static let schema = "categories"
     
     @ID(key: .id)
     var id: UUID?

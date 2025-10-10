@@ -22,7 +22,7 @@ struct CreateItemsTableMigration: AsyncMigration {
             .id()
             .field("title", .string, .required)
             .field("description", .string)
-            .field("start_data", .date, .required)
+            .field("start_date", .date, .required)
             .field("frequency", frequency, .required)
             .field("goal_days", .int, .required)
             .field("completed_days", .int, .required)
