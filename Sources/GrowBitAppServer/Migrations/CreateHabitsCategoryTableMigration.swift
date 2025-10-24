@@ -11,7 +11,7 @@ import Fluent
 struct CreateHabitsCategoryTableMigration: AsyncMigration {
     
     func prepare(on database: any Database) async throws {
-        try await database.schema("habits_categories")
+        try await database.schema("categories")
             .id()
             .field("name", .string, .required)
             .field("color_code", .string, .required)
@@ -20,7 +20,7 @@ struct CreateHabitsCategoryTableMigration: AsyncMigration {
     }
     
     func revert(on database: any Database) async throws {
-        try await database.schema("habits_categories")
+        try await database.schema("categories")
             .delete()
     }
 }
